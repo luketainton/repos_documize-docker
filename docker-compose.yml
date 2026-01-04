@@ -1,0 +1,35 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # Alternatively, you can use a pre-built image:
+    # image: "git.tainton.uk/repos/documize-docker:latest"
+    restart: "unless-stopped"
+    environment:
+      - "DOCUMIZEPORT=5001"
+      - "DOCUMIZESALT=your_salt_here"
+      - "DOCUMIZEDBTYPE=postgresql"
+      - "DOCUMIZEDB=host=db port=5432 dbname=documize user=documize password=${DB_PASSWORD} sslmode=disable"
+    ports:
+      - "80:5001/tcp"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:18.1-alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=documize
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=documize
+    volumes:
+      - "./db:/var/lib/postgresql/18/docker"
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U documize
+      interval: 5s
+      timeout: 5s
+      retries: 5
