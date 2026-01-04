@@ -21,7 +21,8 @@ jobs:
         with:
           dockerfile: Dockerfile
           output-file: hadolint.out
-          format: sonarqube
+          # format: sonarqube
+          format: tty
           no-fail: true
       
       - name: Print Hadolint results
