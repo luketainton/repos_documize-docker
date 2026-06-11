@@ -1,4 +1,4 @@
-FROM alpine:3.23.4
+FROM alpine:3.24.0
 LABEL maintainer="Luke Tainton <luke@tainton.uk>"
 LABEL org.opencontainers.image.source="https://git.tainton.uk/repos/documize-docker"
 ARG DOCUMIZE_VERSION=v5.14.0
